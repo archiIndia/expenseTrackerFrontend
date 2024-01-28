@@ -24,16 +24,19 @@ const getAllExpenses = async () => {
     console.log(error);
     throw error;
   }
-  };
-  const deleteExpense = async (expenseId) => {
-    try {
-      const response = await axios.delete(baseURL + "/del/" + expenseId);
-      console.log("abs", response);
-      return response.data;
-    } 
-    catch (err) {
-      
-    }
-  };
+};
+const deleteExpense = async (expenseId) => {
+  try {
+    const response = await axios.delete(baseURL + "/del/" + expenseId);
+    console.log("abs", response);
+    return response.data;
+  } catch (err) {}
+};
+const findOne = async (fId) => {
+  try {
+    const response= await axios.get(baseURL+ "/"+ fId)
+    return response.data;
+  } catch (error) {}
+};
 
-export { createExpense, getAllExpenses,deleteExpense };
+export { createExpense, getAllExpenses, deleteExpense,findOne };
