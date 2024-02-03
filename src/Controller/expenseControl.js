@@ -38,5 +38,6 @@ const findOne = async (fId) => {
     return response.data;
   } catch (error) {}
 };
+const updateOne= async()
 
 export { createExpense, getAllExpenses, deleteExpense,findOne };
