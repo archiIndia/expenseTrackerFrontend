@@ -3,9 +3,11 @@ import {
   createExpense,
   getAllExpenses,
   deleteExpense,
-  findOne
+  findOne,
+  updateExpense,
 } from "./Controller/expenseControl";
-import { LucideDelete, Trash2,PenLine } from "lucide-react";
+import { LucideDelete, Trash2, PenLine } from "lucide-react";
+import moment from "moment";
 
 function Expense() {
   const [income_val, setIncome_val] = useState(0);
@@ -44,15 +46,15 @@ function Expense() {
     //Store the Expenses which are not Deleted...
     const tempArray = expenses.filter((exxp) => {
       return exxp._id !== delexpenseId;
-});
+    });
     setExpenses(tempArray);
   };
-  const handleFetch= async(fetchId)=>{
-    const fetched= await findOne(fetchId);
+  const handleFetch = async (fetchId) => {
+    const fetched = await findOne(fetchId);
     setIncome_val(fetched.income);
     setExpense(fetched.expense);
-    SetDate(fetched.date);
-  }
+    SetDate(moment(fetched.date).format("YYYY-MM-DD"));
+  };
 
   return (
     <div className={"flex flex-col items-center mt-5"}>
@@ -116,7 +118,7 @@ function Expense() {
         {expenses.map((exp, index) => (
           <div
             key={index}
-            className="flex flex-row  w-full rounded shadow shadow-lg p-6"
+            className="flex flex-row  w-full roundedshadow shadow-lg p-6"
           >
             <div className={"flex w-full justify-between"}>
               <div>
@@ -145,10 +147,12 @@ function Expense() {
                   }}
                   className="cursor-pointer h-5 w-5 text-red-500"
                 />
-                <PenLine onClick={()=>{
-                  handleFetch(exp._id);
-                }}
-                className="cursor-pointer h-5 w-5 text-green-500"/>
+                <PenLine
+                  onClick={() => {
+                    handleFetch(exp._id);
+                  }}
+                  className="cursor-pointer h-5 w-5 text-green-500"
+                />
               </div>
             </div>
           </div>
