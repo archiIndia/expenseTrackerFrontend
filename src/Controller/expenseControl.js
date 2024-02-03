@@ -34,10 +34,22 @@ const deleteExpense = async (expenseId) => {
 };
 const findOne = async (fId) => {
   try {
-    const response= await axios.get(baseURL+ "/"+ fId)
+    const response = await axios.get(baseURL + "/" + fId);
     return response.data;
   } catch (error) {}
 };
-const updateOne= async()
+const updateOne = async (fId, { incomeVal, expenseVal, dateVal }) => {
+  try {
+    const payload = {
+      income: incomeVal,
+      expense: expenseVal,
+      date: dateVal,
+    };
+    const updated = await axios.put(baseURL + "/" + fId, payload);
+    return updated.data;
+  } catch (error) {
+    alert("Warning...");
+  }
+};
 
-export { createExpense, getAllExpenses, deleteExpense,findOne };
+export { createExpense, getAllExpenses, deleteExpense, findOne, updateOne };
