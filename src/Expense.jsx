@@ -11,11 +11,9 @@ import {
   Trash2,
   PenLine,
   Loader2,
-  Download,
   ArrowDown,
   Plus,
   LocateIcon,
-  TargetIcon,
   ClipboardEdit,
 } from "lucide-react";
 
@@ -100,20 +98,15 @@ function Expense() {
     setSpendingList([...spendingList, { item_name: "", amount: 0 }]);
   };
   const removeItem = async (ind) => {
-    // const tempArray = expenses.filter((exxp) => {
-    //   return exxp._id !== ind;
-    // });
-    console.log(ind);
     const tempArray = spendingList.filter((product, inx) => inx !== ind);
     setSpendingList(tempArray);
   };
-  const handleItemnameChange = (item_name, ind) => {
+  const handleItemNameChange = (item_name, ind) => {
     console.log("Item:", item_name);
     console.log("Index:", ind);
-    const temp = spendingList;
+    const temp = [...spendingList];
     temp[ind].item_name = item_name; // Replace the old Value with abc Value at position
-  setSpendingList(temp);
-// console.log(temp[ind]);
+    setSpendingList(temp);
   };
 
   return (
@@ -180,7 +173,7 @@ function Expense() {
                     placeholder="Spend on item"
                     className="border rounded p-2 w-full outline-none shadow mt-1"
                     onChange={(ev) => {
-                      handleItemnameChange(ev.target.value, index);
+                      handleItemNameChange(ev.target.value, index);
                     }}
                   />
                 </div>
