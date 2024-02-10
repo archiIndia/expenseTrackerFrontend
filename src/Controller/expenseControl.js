@@ -2,11 +2,11 @@ import axios from "axios";
 
 const baseURL = "http://localhost:5005/expense";
 
-const createExpense = async (income, exp, date) => {
+const createExpense = async (income, exp_list, date) => {
   try {
     const json_body = {
       income: income,
-      expense: exp,
+      exp_list: exp_list,
       date: date,
     };
     const response = await axios.post(baseURL, json_body);
@@ -38,11 +38,11 @@ const findOne = async (fId) => {
     return response.data;
   } catch (error) {}
 };
-const updateOne = async (fId, { incomeVal, expenseVal, dateVal }) => {
+const updateOne = async (fId, { incomeVal, exp_list, dateVal }) => {
   try {
     const payload = {
       income: incomeVal,
-      expense: expenseVal,
+      exp_list: exp_list,
       date: dateVal,
     };
     const updated = await axios.put(baseURL + "/" + fId, payload);

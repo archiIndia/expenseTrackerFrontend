@@ -18,22 +18,23 @@ import {
 } from "lucide-react";
 
 import moment from "moment";
+import ExpenseList from "./ExpenseList";
 
 function Expense() {
   const [income_val, setIncome_val] = useState();
-  const [expense, setExpense] = useState();
+  const [expense, setExpense] = useState(0);
   const [date, SetDate] = useState();
   const [expenses, setExpenses] = useState([]); //Store all Exp in this
   const [fId, setFId] = useState(null);
   const [isPerformingAnyAction, setIsPerformingAnyAction] = useState(false);
   const [spendingList, setSpendingList] = useState([
-    { item_name: "", amount: 100 },
+    { item_name: "", amount: null },
   ]);
 
   const handleCreateExpense = async () => {
     setIsPerformingAnyAction(true);
     try {
-      const data = await createExpense(income_val, expense, date);
+      const data = await createExpense(Number(income_val), spendingList, date);
 
       setExpenses([...expenses, data]);
     } catch (error) {
@@ -53,8 +54,9 @@ function Expense() {
   };
   const handleClear = () => {
     setIncome_val("");
-    setExpense("");
     SetDate("");
+    setSpendingList([{ item_name: "", amount: 0 }]);
+    setExpense(0);
   };
   //Load all Data for One time...
   useEffect(() => {
@@ -65,7 +67,7 @@ function Expense() {
     await deleteExpense(delexpenseId);
     //Store the Expenses which are not Deleted...
     const tempArray = expenses.filter((exxp) => {
-      return exxp._id !== delexpenseId;
+      return exxp._id !== delexpenseId.toString();
     });
     setIsPerformingAnyAction(false);
     setExpenses(tempArray);
@@ -75,8 +77,9 @@ function Expense() {
     const fetched = await findOne(fetchId); //get a single Expense from Backend..
     setIsPerformingAnyAction(false);
     setIncome_val(fetched?.income);
-    setExpense(fetched?.expense);
+    setExpense(fetched?.expenseTotal);
     SetDate(moment(fetched?.date)?.format("YYYY-MM-DD"));
+    setSpendingList(fetched?.itemList);
     setFId(fetchId);
   };
   const handleUpdate = async () => {
@@ -84,7 +87,7 @@ function Expense() {
     const abc = await updateOne(fId, {
       dateVal: date,
       incomeVal: income_val,
-      expenseVal: expense,
+      exp_list: spendingList,
     });
     handleClear();
     // find the position we need to update...
@@ -100,13 +103,27 @@ function Expense() {
   const removeItem = async (ind) => {
     const tempArray = spendingList.filter((product, inx) => inx !== ind);
     setSpendingList(tempArray);
+    const Total = calTotal(tempArray);
+    setExpense(Total);
   };
-  const handleItemNameChange = (item_name, ind) => {
-    console.log("Item:", item_name);
-    console.log("Index:", ind);
+  const handleItemNameChange = (name, ind) => {
     const temp = [...spendingList];
-    temp[ind].item_name = item_name; // Replace the old Value with abc Value at position
+    temp[ind].item_name = name; // Replace the old Value with new Value at position
     setSpendingList(temp);
+  };
+  const handleAmount = (amount, ind) => {
+    const temp = [...spendingList];
+    temp[ind].amount = Number(amount);
+    setSpendingList(temp);
+    const Total = calTotal(temp);
+    setExpense(Total);
+  };
+  const calTotal = (list) => {
+    let totalExpense = 0;
+    for (let exp of list) {
+      totalExpense += exp.amount;
+    }
+    return totalExpense;
   };
 
   return (
@@ -126,18 +143,6 @@ function Expense() {
           />
         </div>
         <div>
-          <input
-            id={"expense"}
-            type="number"
-            value={expense}
-            onChange={(ev) => {
-              setExpense(ev.target.value);
-            }}
-            placeholder="Expense"
-            className="border rounded p-2 w-full outline-none shadow"
-          />
-        </div>
-        <div>
           <label className="" htmlFor={"date"}>
             Date
           </label>
@@ -153,19 +158,26 @@ function Expense() {
           />
         </div>
         <div>
-          <div
-            className={
-              "text-blue-500 hover:text-blue-600 font-semibold text-sm inline-flex items-center cursor-pointer "
-            }
-          >
-            View more
-            <span>
-              <ArrowDown className={"w-4 h-4 ml-1"} />
-            </span>
+          <div className="flex justify-between">
+            <div
+              className={
+                "text-blue-500 hover:text-blue-600 font-semibold text-sm inline-flex items-center cursor-pointer "
+              }
+            >
+              View more
+              <span>
+                <ArrowDown className={"w-4 h-4 ml-1"} />
+              </span>
+            </div>
+            <div className="text-sm px-2 bg-green-100 text-lime-600 rounded-sm">
+              <span>Total: &nbsp;</span>
+              {expense}
+            </div>
           </div>
+
           <div>
             {spendingList.map((product, index) => (
-              <div className={"flex items-center gap-2"} key={index}>
+              <div className="flex items-center gap-2" key={index}>
                 <div className={"w-2/3"}>
                   <input
                     type="text"
@@ -183,6 +195,9 @@ function Expense() {
                     value={product.amount}
                     placeholder="Amount"
                     className="border rounded p-2 w-full outline-none shadow mt-1 text-right"
+                    onChange={(ev) => {
+                      handleAmount(ev.target.value, index);
+                    }}
                   />
                 </div>
                 <div>
@@ -214,6 +229,7 @@ function Expense() {
             onClick={handleCreateExpense}
             className="text-blue-600  border bg-blue-200 uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
           >
+            {/* Conditional Rendering */}
             {isPerformingAnyAction ? (
               <Loader2 className="animate-spin h-5 w-5 text-white" />
             ) : (
@@ -243,81 +259,12 @@ function Expense() {
         </div>
       </div>
       <div className={"flex flex-col w-2/3"}>
-        <div>Expense List</div>
-        <div
-          className={
-            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 gap-2"
-          }
-        >
-          {expenses.map((exp,index) => (
-            <div
-              key={index}
-              className="flex flex-row  w-full rounded shadow-md p-6 border"
-            >
-              <div className={"flex w-full justify-between"}>
-                <div>
-                  <div className={"flex flex-col"}>
-                    <span
-                      className={
-                        "text-xs w-fit mb-2 bg-emerald-200 p-1 rounded text-emerald-700"
-                      }
-                    >
-                      {moment(exp.date).format("DD-MMM-YYYY")}
-                    </span>
-                    <div className={"text-xs"}>Income</div>
-                    <div className={"text-4xl mt-2"}>
-                      <span className={"text-sm"}>Rs.</span>
-                      {exp.income}
-                    </div>
-                  </div>
-                  <div className={"mt-4 flex items-center "}>
-                    <div className={"flex flex-col items-end"}>
-                      <span className={"text-xs"}>Expense</span>
-                      <span
-                        className={`w-fit text-md text-right ${
-                          //String Interpolation
-                          exp.expense > 5000
-                            ? "text-red-500 rounded bg-red-200 px-1"
-                            : ""
-                        } `}
-                      >
-                        {exp.expense}
-                      </span>
-                    </div>
-                    <div className={"flex flex-col ml-5"}>
-                      <span className={"text-xs"}>Balance</span>
-                      <span className={"text-md text-right"}>
-                        {exp.balance}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  {isPerformingAnyAction ? (
-                    <Loader2 className="animate-spin h-5 w-5 text-white" />
-                  ) : (
-                    <Trash2
-                      onClick={() => {
-                        handleDelete(exp._id);
-                      }}
-                      className="cursor-pointer h-5 w-5 text-red-500"
-                    />
-                  )}
-                  {isPerformingAnyAction ? (
-                    <Loader2 className="animate-spin h-5 w-5 text-white" />
-                  ) : (
-                    <PenLine
-                      onClick={() => {
-                        handleFetch(exp._id);
-                      }}
-                      className="cursor-pointer h-5 w-5 text-green-500"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ExpenseList
+          allExpenses={expenses}
+          handleDelete={handleDelete}
+          handleFetch={handleFetch}
+          isPerformingAnyAction={isPerformingAnyAction}
+        />
       </div>
     </div>
   );
