@@ -2,16 +2,12 @@ import {
   Trash2,
   PenLine,
   Loader2,
-  ArrowDown,
-  Plus,
-  LocateIcon,
-  ClipboardEdit,
 } from "lucide-react";
 
 import moment from "moment";
 
 function ExpenseList({
-    allExpenses,
+    allExpenses=[],
     isPerformingAnyAction,
     handleDelete,
     handleFetch,
@@ -20,7 +16,7 @@ function ExpenseList({
       <div>
         <div>Expense List</div>
         <div
-          className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 gap-2"}
+          className={"grid grid-cols-1 xl:grid-cols-2 mt-4 gap-2"}
         >
           {allExpenses.map((exp, index) => (
             <div
