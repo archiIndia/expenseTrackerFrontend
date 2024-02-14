@@ -28,17 +28,20 @@ const getAllExpenses = async () => {
 const deleteExpense = async (expenseId) => {
   try {
     const response = await axios.delete(baseURL + "/del/" + expenseId);
-    console.log("abs", response);
     return response.data;
-  } catch (err) {}
+  } catch (err) {
+    console.log("Can not delete expense");
+  }
 };
-const findOne = async (fId) => {
+const getSingleExpense = async (fId) => {
   try {
     const response = await axios.get(baseURL + "/" + fId);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    console.log("Can not find expense");
+  }
 };
-const updateOne = async (fId, { incomeVal, exp_list, dateVal }) => {
+const updateSingleExpense = async (fId, { incomeVal, exp_list, dateVal }) => {
   try {
     const payload = {
       income: incomeVal,
@@ -52,4 +55,4 @@ const updateOne = async (fId, { incomeVal, exp_list, dateVal }) => {
   }
 };
 
-export { createExpense, getAllExpenses, deleteExpense, findOne, updateOne };
+export { createExpense, getAllExpenses, deleteExpense, getSingleExpense, updateSingleExpense };
