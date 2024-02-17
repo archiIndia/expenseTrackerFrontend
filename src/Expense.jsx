@@ -122,6 +122,16 @@ function Expense() {
     }
     return totalExpense;
   };
+  const handleSpendingItemCopy= (index)=>{
+    const temp= [...spendingList];
+    let ind= index+1;
+    const cloned = temp[index];
+    temp.splice(ind,0,cloned);
+    setSpendingList(temp);
+    const Total = calTotalExpenseFromSpendingList(temp);
+    setExpense(Total);
+  };
+
 
   return (
     <div className={"flex flex-row gap-6"}>
@@ -160,16 +170,14 @@ function Expense() {
             />
           </div>
           <div>
-            <div className="flex justify-between">
+            <div className="flex justify-between">  
               <div
                 className={
                   "text-blue-500 hover:text-blue-600 font-semibold text-lg inline-flex items-center cursor-pointer "
                 }
               >
                 Spending List
-                {/*<span>*/}
-                {/*  <ArrowDown className={"w-4 h-4 ml-1"} />*/}
-                {/*</span>*/}
+                
               </div>
             </div>
 
@@ -202,10 +210,10 @@ function Expense() {
                     <Copy
                       className={"w-4 h-4 text-blue-400 cursor-pointer "}
                       onClick={() => {
-                        // todo: copy this item
+                        handleSpendingItemCopy(index);// todo: copy this item
                       }}
                     />
-                    {
+                    { spendingList.length>1 &&
                       // todo: only show this button if we have more than one item in the list (hint: spendingList must have more than one item in it)
                       <XCircle
                         className={"w-4 h-4 text-red-400 cursor-pointer "}
@@ -244,7 +252,7 @@ function Expense() {
               "flex space-x-2 w-full text-sm px-5 "
             }
           >
-            {
+            {fId ===null &&
               // todo: only show this button if we have "NOT" selected an expense (hind: when fId is null)
               <button
                 onClick={handleCreateExpense}
@@ -258,8 +266,7 @@ function Expense() {
                 )}
               </button>
             }
-            {
-              // todo: only show this button if we have a selected expense (hind: when fId is not null)
+            { fId !== null ?
               <button
                 onClick={handleUpdate}
                 className="text-yellow-600  bg-yellow-50 border uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
@@ -269,7 +276,7 @@ function Expense() {
                 ) : (
                   "Update"
                 )}
-              </button>
+              </button> : ("")
             }
             <button
               onClick={resetAllFields}
