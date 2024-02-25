@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:5005/expense";
-
+const token=()=> `Bearer ${localStorage.getItem("token")}`;
+const config=() => ({ headers: { Authorization:token() } });
 const createExpense = async (income, exp_list, date) => {
   try {
     const json_body = {
@@ -9,7 +10,7 @@ const createExpense = async (income, exp_list, date) => {
       exp_list: exp_list,
       date: date,
     };
-    const response = await axios.post(baseURL, json_body);
+    const response = await axios.post(baseURL, json_body, config());
     return response.data;
   } catch (error) {
     console.log("Error", error);
@@ -18,7 +19,7 @@ const createExpense = async (income, exp_list, date) => {
 };
 const getAllExpenses = async () => {
   try {
-    const response = await axios.get(baseURL + "/getall");
+    const response = await axios.get(`${baseURL}/getall`,config());
     return response.data;
   } catch (error) {
     console.log(error);
@@ -27,7 +28,7 @@ const getAllExpenses = async () => {
 };
 const deleteExpense = async (expenseId) => {
   try {
-    const response = await axios.delete(baseURL + "/del/" + expenseId);
+    const response = await axios.delete(baseURL + "/del/" + expenseId,config());
     return response.data;
   } catch (err) {
     console.log("Can not delete expense");
@@ -35,7 +36,7 @@ const deleteExpense = async (expenseId) => {
 };
 const getSingleExpense = async (fId) => {
   try {
-    const response = await axios.get(baseURL + "/" + fId);
+    const response = await axios.get(baseURL + "/" + fId,config());
     return response.data;
   } catch (error) {
     console.log("Can not find expense");
@@ -48,11 +49,17 @@ const updateSingleExpense = async (fId, { incomeVal, exp_list, dateVal }) => {
       exp_list: exp_list,
       date: dateVal,
     };
-    const updated = await axios.put(baseURL + "/" + fId, payload);
+    const updated = await axios.put(baseURL + "/" + fId, payload,config());
     return updated.data;
   } catch (error) {
     alert("Warning...");
   }
 };
 
-export { createExpense, getAllExpenses, deleteExpense, getSingleExpense, updateSingleExpense };
+export {
+  createExpense,
+  getAllExpenses,
+  deleteExpense,
+  getSingleExpense,
+  updateSingleExpense,
+};

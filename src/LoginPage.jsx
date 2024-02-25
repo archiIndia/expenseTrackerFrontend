@@ -9,14 +9,18 @@ function LoginPage() {
 
   const [email,setEmail]= useState();
   const [password,setPassword]= useState();
+  const [errorMsg,setErrorMsg]= useState();
   const handleLogin = async () => {
     try{
     // Todo: call API to Login using Password and Email
+    localStorage.removeItem("token");
     const login= await signIn({email: email,password: password})
+    console.log(login);
+    localStorage.setItem("token",login.token);
     navi("/app");
     }
     catch(error){
-      alert(error.message ?? "Can not LogIn...")
+      setErrorMsg(error.message)
     }
   };
 
@@ -45,7 +49,7 @@ function LoginPage() {
             </label>
             <Input type="password" id="password" className={"mt-1"} onChange={(ev)=> setPassword(ev.target.value)} />
           </div>
-
+{errorMsg}
           <div>
             <Button className={"mt-5 w-full"} onClick={handleLogin}>
               Login

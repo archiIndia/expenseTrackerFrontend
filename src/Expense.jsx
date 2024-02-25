@@ -10,7 +10,7 @@ import {
 import { Loader2, Plus, LocateIcon, XCircle, Copy } from "lucide-react";
 
 import moment from "moment";
-import ExpenseList from "./ExpenseList";
+import {ExpenseList,FileUpload} from "./ExpenseList";
 
 function Expense() {
   const [income_val, setIncome_val] = useState("");
@@ -125,7 +125,7 @@ function Expense() {
   const handleSpendingItemCopy= (index)=>{
     const temp= [...spendingList];
     let ind= index+1;
-    const cloned = temp[index];
+    const cloned = {...temp[index]};
     temp.splice(ind,0,cloned);
     setSpendingList(temp);
     const Total = calTotalExpenseFromSpendingList(temp);
@@ -298,6 +298,7 @@ function Expense() {
           handleFetch={handleFetch}
           isPerformingAnyAction={isPerformingAnyAction}
         />
+        <FileUpload/>
       </div>
     </div>
   );
