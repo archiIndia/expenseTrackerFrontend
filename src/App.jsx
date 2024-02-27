@@ -3,6 +3,8 @@ import HomePage from "./HomePage.jsx";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import {createBrowserRouter,RouterProvider, } from "react-router-dom";
+import Expense from "@/Expense.jsx";
+import NotFoundPage from "@/NotFoundPage.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,6 +23,22 @@ function App() {
     {
       path: "/app",
       element: <HomePage />,
+      children: [
+        {
+          path: "/app",
+          element: <Expense />,
+        },
+        {
+          path: "/app/expenses",
+          element: <Expense />,
+        },
+        {
+          // any route that is not defined
+          // will be redirected to this route.
+          path: "*",
+          element: <NotFoundPage/>
+        }
+      ],
     },
   ]);
   return (

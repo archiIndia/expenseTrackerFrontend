@@ -49,7 +49,7 @@ function LoginPage() {
             </label>
             <Input type="password" id="password" className={"mt-1"} onChange={(ev)=> setPassword(ev.target.value)} />
           </div>
-{errorMsg}
+          {errorMsg}
           <div>
             <Button className={"mt-5 w-full"} onClick={handleLogin}>
               Login

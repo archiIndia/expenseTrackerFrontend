@@ -7,10 +7,21 @@ import {
   updateSingleExpense,
 } from "./Services/expenseControl";
 
-import { Loader2, Plus, LocateIcon, XCircle, Copy } from "lucide-react";
+import {
+  Loader2,
+  Plus,
+  LocateIcon,
+  XCircle,
+  Copy,
+  ArrowLeft,
+  ChevronLeft,
+} from "lucide-react";
 
 import moment from "moment";
-import {ExpenseList,FileUpload} from "./ExpenseList";
+import { ExpenseList } from "./ExpenseList";
+import { Input } from "@/components/ui/input.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { cn } from "@/lib/utils.js";
 
 function Expense() {
   const [income_val, setIncome_val] = useState("");
@@ -122,183 +133,212 @@ function Expense() {
     }
     return totalExpense;
   };
-  const handleSpendingItemCopy= (index)=>{
-    const temp= [...spendingList];
-    let ind= index+1;
-    const cloned = {...temp[index]};
-    temp.splice(ind,0,cloned);
+  const handleSpendingItemCopy = (index) => {
+    const temp = [...spendingList];
+    let ind = index + 1;
+    const cloned = { ...temp[index] };
+    temp.splice(ind, 0, cloned);
     setSpendingList(temp);
     const Total = calTotalExpenseFromSpendingList(temp);
     setExpense(Total);
   };
 
+  const [showSideBar, setShowSideBar] = useState(false);
+  const handleShowSideBar = () => {
+    setShowSideBar(!showSideBar);
+  };
 
   return (
-    <div className={"flex flex-row gap-6"}>
+    <div className={"flex flex-row gap-2"}>
       <div
-        className={
-          "flex flex-col  min-w-96 gap-3 min-h-screen bg-gray-100 bg-opacity-75 justify-between "
-        }
+        className={cn(
+          "flex flex-col  transition-width duration-500  gap-3 min-h-screen border-r-[1px] border-r-gray-100 shadow bg-gray-50 justify-between relative ",
+          showSideBar ? "w-96" : "w-10",
+        )}
       >
-        <div className={"flex gap-3 flex-col py-10 px-5"}>
-          <div>Add Expense</div>
-          <div>
-            <input
-              id={"income"}
-              type="number"
-              value={income_val}
-              onChange={(ev) => {
-                setIncome_val(ev.target.value);
-              }}
-              placeholder="Income"
-              className="border rounded p-2 w-full outline-none shadow"
-            />
-          </div>
-          <div>
-            <label className="" htmlFor={"date"}>
-              Date
-            </label>
-
-            <input
-              id={"date"}
-              type="date"
-              value={date}
-              onChange={(ev) => {
-                SetDate(ev.target.value);
-              }}
-              className="border rounded p-2 w-full outline-none shadow mt-1"
-            />
-          </div>
-          <div>
-            <div className="flex justify-between">  
-              <div
-                className={
-                  "text-blue-500 hover:text-blue-600 font-semibold text-lg inline-flex items-center cursor-pointer "
-                }
-              >
-                Spending List
-                
+        {showSideBar && (
+          <>
+            <div className={"flex gap-3 flex-col py-10 px-5"}>
+              <div>Add Expense</div>
+              <div>
+                <Input
+                  id={"income"}
+                  type="number"
+                  value={income_val}
+                  onChange={(ev) => {
+                    setIncome_val(ev.target.value);
+                  }}
+                  placeholder="Income"
+                  className=" text-right"
+                />
               </div>
-            </div>
+              <div>
+                <label className="" htmlFor={"date"}>
+                  Date
+                </label>
 
-            <div>
-              {spendingList.map((product, index) => (
-                <div className="flex items-center gap-2" key={index}>
-                  <div className={"w-2/3"}>
-                    <input
-                      type="text"
-                      value={product.item_name}
-                      placeholder="Spend on item"
-                      className="border rounded p-2 w-full outline-none shadow mt-1"
-                      onChange={(ev) => {
-                        handleSpendingItemNameChange(ev.target.value, index);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="number"
-                      value={product.amount}
-                      placeholder="Amount"
-                      className="border rounded p-2 w-full outline-none shadow mt-1 text-right"
-                      onChange={(ev) => {
-                        handleSpendingItemAmountChange(ev.target.value, index);
-                      }}
-                    />
-                  </div>
-                  <div className={"flex gap-1"}>
-                    <Copy
-                      className={"w-4 h-4 text-blue-400 cursor-pointer "}
-                      onClick={() => {
-                        handleSpendingItemCopy(index);// todo: copy this item
-                      }}
-                    />
-                    { spendingList.length>1 &&
-                      // todo: only show this button if we have more than one item in the list (hint: spendingList must have more than one item in it)
-                      <XCircle
-                        className={"w-4 h-4 text-red-400 cursor-pointer "}
-                        onClick={() => {
-                          handleSpendingItemRemove(index);
-                        }}
-                      />
+                <Input
+                  id={"date"}
+                  type="date"
+                  value={date}
+                  onChange={(ev) => {
+                    SetDate(ev.target.value);
+                  }}
+                  className=" mt-1 w-full"
+                />
+              </div>
+              <div className={"my-5"}>
+                <div className="flex justify-between">
+                  <div
+                    className={
+                      "text-blue-500 hover:text-blue-600 font-semibold text-lg inline-flex items-center cursor-pointer "
                     }
+                  >
+                    Spending List
                   </div>
                 </div>
-              ))}
-
-              <div className={"flex justify-between mt-2"}>
-                <div className="text-sm px-2 bg-green-100 text-lime-600 rounded-sm">
-                  <span>Total: &nbsp;</span>
-                  {expense}
-                </div>
-                <div
-                  className={
-                    "text-blue-500 hover:text-blue-600 font-semibold text-sm inline-flex items-center cursor-pointer  "
-                  }
-                  onClick={handleAddSpendingItem}
-                >
-                  <span>
-                    <Plus className={"w-4 h-4 "} />
-                  </span>
-                  Add more
+                <div className={"mt-2"}>
+                  <div className={"flex gap-1 flex-col"}>
+                    {spendingList.map((product, index) => (
+                      <div className="flex items-center gap-4" key={index}>
+                        <div className={"w-2/3"}>
+                          <Input
+                            type="text"
+                            value={product.item_name}
+                            placeholder="Spend on item"
+                            className="mt-1"
+                            onChange={(ev) => {
+                              handleSpendingItemNameChange(
+                                ev.target.value,
+                                index,
+                              );
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <Input
+                            type="number"
+                            value={product.amount}
+                            placeholder="Amount"
+                            className="mt-1 text-right"
+                            onChange={(ev) => {
+                              handleSpendingItemAmountChange(
+                                ev.target.value,
+                                index,
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className={"flex gap-1"}>
+                          <Copy
+                            className={"w-4 h-4 text-blue-400 cursor-pointer "}
+                            onClick={() => {
+                              handleSpendingItemCopy(index);
+                            }}
+                          />
+                          {spendingList.length > 1 && (
+                            <XCircle
+                              className={"w-4 h-4 text-red-400 cursor-pointer "}
+                              onClick={() => {
+                                handleSpendingItemRemove(index);
+                              }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={"flex justify-between mt-2"}>
+                    <div className="text-sm px-2 bg-green-100 text-lime-600 rounded-sm">
+                      <span>Total: &nbsp;</span>
+                      {expense}
+                    </div>
+                    <div
+                      className={
+                        "text-blue-500 hover:text-blue-600 font-semibold text-sm inline-flex items-center cursor-pointer  "
+                      }
+                      onClick={handleAddSpendingItem}
+                    >
+                      <span>
+                        <Plus className={"w-4 h-4 "} />
+                      </span>
+                      Add more
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className={"relative border-t py-3 shadow"}>
-          <div
-            className={
-              "flex space-x-2 w-full text-sm px-5 "
-            }
-          >
-            {fId ===null &&
-              // todo: only show this button if we have "NOT" selected an expense (hind: when fId is null)
-              <button
-                onClick={handleCreateExpense}
-                className="text-blue-600  border bg-blue-200 uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
-              >
-                {/* Conditional Rendering */}
-                {isPerformingAnyAction ? (
-                  <Loader2 className="animate-spin h-5 w-5 text-white" />
-                ) : (
-                  "Save"
+            <div className={"relative border-t py-3"}>
+              <div className={"flex space-x-2 w-full text-sm px-5 "}>
+                {fId === null && (
+                  <button
+                    onClick={handleCreateExpense}
+                    className="text-blue-600  border bg-blue-200 uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
+                  >
+                    {/* Conditional Rendering */}
+                    {isPerformingAnyAction ? (
+                      <Loader2 className="animate-spin h-5 w-5 text-white" />
+                    ) : (
+                      "Save"
+                    )}
+                  </button>
                 )}
-              </button>
-            }
-            { fId !== null ?
-              <button
-                onClick={handleUpdate}
-                className="text-yellow-600  bg-yellow-50 border uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
-              >
-                {isPerformingAnyAction ? (
-                  <LocateIcon className="animate-spin h-5 w-5 text-white" />
+                {fId !== null ? (
+                  <button
+                    onClick={handleUpdate}
+                    className="text-yellow-600  bg-yellow-50 border uppercase font-bold py-2 px-4 rounded items-center flex justify-center"
+                  >
+                    {isPerformingAnyAction ? (
+                      <LocateIcon className="animate-spin h-5 w-5 text-white" />
+                    ) : (
+                      "Update"
+                    )}
+                  </button>
                 ) : (
-                  "Update"
+                  ""
                 )}
-              </button> : ("")
-            }
-            <button
-              onClick={resetAllFields}
-              className="text-gray-600 bg-gray-200 border font-medium py-2 px-4 uppercase rounded items-center flex justify-center"
-            >
-              {isPerformingAnyAction ? (
-                <Loader2 className="animate-spin h-5 w-5 text-white" />
-              ) : (
-                "Clear"
-              )}
-            </button>
-          </div>
-        </div>
+                <button
+                  onClick={resetAllFields}
+                  className="text-gray-600 bg-gray-200 border font-medium py-2 px-4 uppercase rounded items-center flex justify-center"
+                >
+                  {isPerformingAnyAction ? (
+                    <Loader2 className="animate-spin h-5 w-5 text-white" />
+                  ) : (
+                    "Clear"
+                  )}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        <Button
+          size={"icon"}
+          variant={"outline"}
+          onClick={handleShowSideBar}
+          className={cn(
+            "absolute -right-5 bottom-1/2  ",
+            !showSideBar ? "bg-primary" : "",
+          )}
+        >
+          {showSideBar && (
+            <ChevronLeft className={"text-gray-400 hover:text-gray-500"} />
+          )}
+          {!showSideBar && <Plus className={"text-white"} />}
+        </Button>
       </div>
-      <div className={"flex flex-col w-2/3 py-10 px-5"}>
+      <div
+        className={cn(
+          "flex flex-col  px-5 h-screen py-6 overflow-scroll",
+          showSideBar ? "w-2/3" : "w-full",
+        )}
+      >
         <ExpenseList
           allExpenses={expenses}
           handleDelete={handleDelete}
           handleFetch={handleFetch}
           isPerformingAnyAction={isPerformingAnyAction}
         />
-        <FileUpload/>
       </div>
     </div>
   );

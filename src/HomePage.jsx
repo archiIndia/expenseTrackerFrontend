@@ -1,15 +1,15 @@
-import Expense from "./Expense.jsx";
 import SideBar from "./SideBar.jsx";
+import {Outlet} from "react-router-dom";
 
 const HomePage = () => {
   
   return (
     <div className={"flex"}>
-      <div className={"min-w-60"}>
+      <div className={"min-w-60 h-screen"}>
         <SideBar />
       </div>
-      <div className={"w-full"}>
-        <Expense />
+      <div className={"w-full h-screen overflow-scroll"}>
+        <Outlet/>
       </div>
     </div>
   );

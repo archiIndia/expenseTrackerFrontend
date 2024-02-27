@@ -1,5 +1,6 @@
 import {AreaChart, DollarSign, UserRoundCog} from "lucide-react";
-
+import {Link, NavLink} from "react-router-dom";
+import {cn} from "@/lib/utils.js";
 const SideBar = () => {
   return (
     <div className="bg-blue-600 h-screen text-white">
@@ -9,21 +10,31 @@ const SideBar = () => {
       </div>
       <div className={"pl-1 "}>
         <ul className={"mt-5"}>
-          <li className={"hover:bg-blue-800 rounded-l-md"}>
-            <a href="#" className={"flex items-center p-2"}>
+          <li className={""}>
+            <NavLink
+                to={"/app/expenses"}
+                className={({isActive})=>{
+                  return cn("flex items-center  rounded-l-md p-2",isActive ? "text-accent-foreground bg-gray-50" : "hover:bg-blue-800")
+                }}>
               <span className={"w-5 h-5"}>
                 <DollarSign className={"w-5 h-5"} />
               </span>
-              <span className={"ml-2"}>Expenses</span>
-            </a>
+              <div className={"ml-2"}>
+                  Expenses
+              </div>
+            </NavLink>
           </li>
           <li className={"hover:bg-blue-800 rounded-l-md"}>
-            <a href="#" className={"flex items-center p-2"}>
+            <div className={"flex items-center p-2"}>
               <span className={"w-5 h-5"}>
                 <AreaChart className={"w-5 h-5"} />
               </span>
-              <span className={"ml-2"}>Reports</span>
-            </a>
+              <div className={"ml-2"}>
+                <Link to={"/app/reports"}>
+                  Reports
+                </Link>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
