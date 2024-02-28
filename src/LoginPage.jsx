@@ -7,10 +7,11 @@ import { useState } from "react";
 function LoginPage() {
   const navi = useNavigate(); //useNavigate Function return another Function which we store in navi variable.
 
-  const [email,setEmail]= useState();
-  const [password,setPassword]= useState();
-  const [errorMsg,setErrorMsg]= useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [errorMsg, setErrorMsg] = useState();
   const handleLogin = async () => {
+
     try{
     localStorage.removeItem("token");
     const login= await signIn({email: email,password: password})
@@ -20,7 +21,6 @@ function LoginPage() {
     }
     catch(error){
       setErrorMsg(error.message)
-    }
   };
 
   return (
@@ -40,13 +40,23 @@ function LoginPage() {
             <label htmlFor="email" className={"block mt-5 text-gray-500"}>
               Email
             </label>
-            <Input type="text" id="email" className={"mt-1"} onChange={(ev)=> setEmail(ev.target.value)} />
+            <Input
+              type="text"
+              id="email"
+              className={"mt-1"}
+              onChange={(ev) => setEmail(ev.target.value)}
+            />
           </div>
           <div>
             <label htmlFor="password" className={"block mt-2 text-gray-500"}>
               Password
             </label>
-            <Input type="password" id="password" className={"mt-1"} onChange={(ev)=> setPassword(ev.target.value)} />
+            <Input
+              type="password"
+              id="password"
+              className={"mt-1"}
+              onChange={(ev) => setPassword(ev.target.value)}
+            />
           </div>
           {errorMsg}
           <div>
