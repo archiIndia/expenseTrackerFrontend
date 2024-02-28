@@ -72,9 +72,9 @@ function SignUpPage() {
             />
           </div>
           <div className={"flex w-full flex-col gap-2"}>
-            <Button className={"mt-5"}>
-              <Link to={"/sign_in"}>Login</Link>
-            </Button>
+            <Link to={"/sign_in"}>
+              <Button className={"mt-5 w-full"}>Login</Button>
+            </Link>
             <Button variant={"outline"} onClick={handleSignUp}>
               Sign Up
             </Button>

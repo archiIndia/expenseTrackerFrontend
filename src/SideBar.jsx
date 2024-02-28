@@ -1,4 +1,7 @@
-import { AreaChart, DollarSign, UserRoundCog } from "lucide-react";
+
+import {AreaChart, DollarSign, LayoutDashboard, UserRoundCog} from "lucide-react";
+import {Link, NavLink} from "react-router-dom";
+import {cn} from "@/lib/utils.js";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./components/ui/button";
 
@@ -30,21 +33,14 @@ const SideBar = () => {
       
       <div className={"pl-1 "}>
         <ul className={"mt-5"}>
-          <li className={"hover:bg-blue-800 rounded-l-md"}>
-            <a href="#" className={"flex items-center p-2"}>
-              <span className={"w-5 h-5"}>
-                <DollarSign className={"w-5 h-5"} />
-              </span>
-              <span className={"ml-2"}>Expenses</span>
-            </a>
+          <li >
+              <SideMenuItem icon={<LayoutDashboard className={"w-5 h-5"} />} title={"Dashboard"} to={"/app/home"} />
           </li>
-          <li className={"hover:bg-blue-800 rounded-l-md"}>
-            <a href="#" className={"flex items-center p-2"}>
-              <span className={"w-5 h-5"}>
-                <AreaChart className={"w-5 h-5"} />
-              </span>
-              <span className={"ml-2"}>Reports</span>
-            </a>
+            <li >
+              <SideMenuItem icon={<DollarSign className={"w-5 h-5"} />} title={"Expenses"} to={"/app/expenses"} />
+          </li>
+          <li>
+              <SideMenuItem icon={<AreaChart className={"w-5 h-5"} />} title={"Reports"} to={"/app/reports"} />
           </li>
         </ul>
       </div>
@@ -52,3 +48,20 @@ const SideBar = () => {
   );
 };
 export default SideBar;
+
+const SideMenuItem = ({icon, title, to}) => {
+    return (
+        <NavLink
+            to={to}
+            className={({isActive})=>{
+                return cn("flex items-center  rounded-l-md p-2",isActive ? "text-accent-foreground bg-gray-50" : "hover:bg-blue-800")
+            }}>
+            <span className={"w-5 h-5"}>
+            {icon}
+            </span>
+            <div className={"ml-2"}>
+            {title}
+            </div>
+        </NavLink>
+    );
+}

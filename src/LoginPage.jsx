@@ -11,16 +11,16 @@ function LoginPage() {
   const [password, setPassword] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const handleLogin = async () => {
-    try {
-      // Todo: call API to Login using Password and Email
-      localStorage.removeItem("token");
-      const login = await signIn({ email: email, password: password });
-      console.log(login);
-      localStorage.setItem("token", login.token);
-      navi("/app");
-    } catch (error) {
-      setErrorMsg(error.message);
+
+    try{
+    localStorage.removeItem("token");
+    const login= await signIn({email: email,password: password})
+    console.log(login);
+    localStorage.setItem("token",login.token);
+    navi("/app/home");
     }
+    catch(error){
+      setErrorMsg(error.message)
   };
 
   return (

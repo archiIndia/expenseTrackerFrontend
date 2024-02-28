@@ -1,51 +1,9 @@
 import { Trash2, PenLine, Loader2 } from "lucide-react";
 import moment from "moment";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-
-const FileUpload = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (ev) => {
-    setSelectedFile(ev.target.files[0]);
-    console.log(ev.target.files);
-  };
-
-  const handleUpload = async () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("File1", selectedFile);
-      // formData.append("File2", JSON.stringify({abx:"10"}));
-
-      try {
-        const response= await axios.post("http://localhost:5005/uploads",formData,
-       { headers :{
-          "content-type": "multipart/form-data"
-        }})
-        console.log("File Uploaded Sucessfully:",response.data);
-      } 
-      catch (error) {
-        console.log("Error in File Uploading",error);
-      }
-    }
-    else{
-      alert("Please Select a File to Upload");
-    }
-  };
-  
-  return(
-    <div>
-      <div>
-      File Upload
-      </div>
-    <div>
-      <input type="file" onChange={handleFileChange} multiple={true}/>
-      <button onClick={handleUpload} className="flex flex-wrap bg-sky-400 rounded-md">Upload</button>
-    </div>
-    </div>
-  )
-};
+import PaginationComponent from "@/Pagination.jsx";
 
 function ExpenseList({
   allExpenses = [],
@@ -55,7 +13,12 @@ function ExpenseList({
 }) {
   return (
     <div>
-      <div>Expense List</div>
+      <div className={"flex justify-between "}>
+        <span>Expense List</span>
+        <div>
+          <PaginationComponent />
+        </div>
+      </div>
       <div className={"grid grid-cols-1 xl:grid-cols-2 mt-4 gap-2"}>
         {allExpenses.map((exp, index) => (
           <div
@@ -128,4 +91,53 @@ function ExpenseList({
   );
 }
 
-export {ExpenseList,FileUpload};
+export { ExpenseList, FileUpload };
+
+const FileUpload = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (ev) => {
+    setSelectedFile(ev.target.files[0]);
+    console.log(ev.target.files);
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("File1", selectedFile);
+      // formData.append("File2", JSON.stringify({abx:"10"}));
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5005/uploads",
+          formData,
+          {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          },
+        );
+        console.log("File Uploaded Sucessfully:", response.data);
+      } catch (error) {
+        console.log("Error in File Uploading", error);
+      }
+    } else {
+      alert("Please Select a File to Upload");
+    }
+  };
+
+  return (
+    <div>
+      <div>File Upload</div>
+      <div>
+        <input type="file" onChange={handleFileChange} multiple={true} />
+        <button
+          onClick={handleUpload}
+          className="flex flex-wrap bg-sky-400 rounded-md"
+        >
+          Upload
+        </button>
+      </div>
+    </div>
+  );
+};
