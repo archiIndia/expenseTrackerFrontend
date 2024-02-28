@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Expense from "@/Expense.jsx";
 import NotFoundPage from "@/NotFoundPage.jsx";
 import ComingSoonPage from "@/ComingSoonPage.jsx";
+import DashboardPage from "@/Dashboard/DashboardPage.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,12 +28,17 @@ function App() {
       children: [
         {
           path: "/app/home",
-          element: <ComingSoonPage/>
+          element: <DashboardPage/>
         },
         {
           path: "/app/expenses",
           index: true,
           element: <Expense />,
+        },
+        {
+          path: "/app/reports",
+          index: true,
+          element: <ComingSoonPage />,
         },
         {
           // any route that is not defined
