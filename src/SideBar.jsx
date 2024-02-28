@@ -1,4 +1,4 @@
-import {AreaChart, DollarSign, UserRoundCog} from "lucide-react";
+import {AreaChart, DollarSign, LayoutDashboard, UserRoundCog} from "lucide-react";
 import {Link, NavLink} from "react-router-dom";
 import {cn} from "@/lib/utils.js";
 const SideBar = () => {
@@ -10,31 +10,14 @@ const SideBar = () => {
       </div>
       <div className={"pl-1 "}>
         <ul className={"mt-5"}>
-          <li className={""}>
-            <NavLink
-                to={"/app/expenses"}
-                className={({isActive})=>{
-                  return cn("flex items-center  rounded-l-md p-2",isActive ? "text-accent-foreground bg-gray-50" : "hover:bg-blue-800")
-                }}>
-              <span className={"w-5 h-5"}>
-                <DollarSign className={"w-5 h-5"} />
-              </span>
-              <div className={"ml-2"}>
-                  Expenses
-              </div>
-            </NavLink>
+          <li >
+              <SideMenuItem icon={<LayoutDashboard className={"w-5 h-5"} />} title={"Dashboard"} to={"/app/home"} />
           </li>
-          <li className={"hover:bg-blue-800 rounded-l-md"}>
-            <div className={"flex items-center p-2"}>
-              <span className={"w-5 h-5"}>
-                <AreaChart className={"w-5 h-5"} />
-              </span>
-              <div className={"ml-2"}>
-                <Link to={"/app/reports"}>
-                  Reports
-                </Link>
-              </div>
-            </div>
+            <li >
+              <SideMenuItem icon={<DollarSign className={"w-5 h-5"} />} title={"Expenses"} to={"/app/expenses"} />
+          </li>
+          <li>
+              <SideMenuItem icon={<AreaChart className={"w-5 h-5"} />} title={"Reports"} to={"/app/reports"} />
           </li>
         </ul>
       </div>
@@ -42,3 +25,20 @@ const SideBar = () => {
   );
 };
 export default SideBar;
+
+const SideMenuItem = ({icon, title, to}) => {
+    return (
+        <NavLink
+            to={to}
+            className={({isActive})=>{
+                return cn("flex items-center  rounded-l-md p-2",isActive ? "text-accent-foreground bg-gray-50" : "hover:bg-blue-800")
+            }}>
+            <span className={"w-5 h-5"}>
+            {icon}
+            </span>
+            <div className={"ml-2"}>
+            {title}
+            </div>
+        </NavLink>
+    );
+}
