@@ -26,23 +26,23 @@ const TopExpenses = () => {
           <div className={"flex flex-col gap-y-2"}>
             <div className={"flex justify-between"}>
               <p>Food</p>
-              <p>$100</p>
+              <p>₹100</p>
             </div>
             <div className={"flex justify-between"}>
               <p>Transport</p>
-              <p>$50</p>
+              <p>₹50</p>
             </div>
             <div className={"flex justify-between"}>
               <p>Entertainment</p>
-              <p>$30</p>
+              <p>₹30</p>
             </div>
             <div className={"flex justify-between"}>
               <p>Health</p>
-              <p>$20</p>
+              <p>₹20</p>
             </div>
             <div className={"flex justify-between"}>
               <p>Education</p>
-              <p>$10</p>
+              <p>₹10</p>
             </div>
           </div>
         </CardContent>

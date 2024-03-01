@@ -17,9 +17,9 @@ const createExpense = async (income, exp_list, date) => {
     throw error; //Propagate the Error to Parent
   }
 };
-const getAllExpenses = async () => {
+const getAllExpenses = async (page_number=1) => {
   try {
-    const response = await axios.get(`${baseURL}/getall`,config());
+const response = await axios.get(`${baseURL}/getall?page=${page_number}`,config());
     return response.data;
   } catch (error) {
     console.log(error);

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/pagination";
 
 function PaginationComponent() {
+  
   return (
     <Pagination>
       <PaginationContent>

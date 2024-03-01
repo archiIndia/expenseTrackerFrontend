@@ -1,6 +1,6 @@
 
 import {AreaChart, DollarSign, LayoutDashboard, UserRoundCog} from "lucide-react";
-import {Link, NavLink} from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import {cn} from "@/lib/utils.js";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./components/ui/button";
@@ -24,20 +24,19 @@ const SideBar = () => {
         <span>
           <Button
             onClick={handleLogout}
-            className="flex flex-shrink text-rose-700 bg-rose-400 rounded-md font-semibold"
+            className="flex flex-shrink text-rose-700"
           >
             Log Out
           </Button> </span>
         </div>
           
-      
-      <div className={"pl-1 "}>
+       <div className={"pl-1 "}>
         <ul className={"mt-5"}>
           <li >
               <SideMenuItem icon={<LayoutDashboard className={"w-5 h-5"} />} title={"Dashboard"} to={"/app/home"} />
           </li>
             <li >
-              <SideMenuItem icon={<DollarSign className={"w-5 h-5"} />} title={"Expenses"} to={"/app/expenses"} />
+              <SideMenuItem icon={<DollarSign className={"w-5 h-5"} />} title={"Expenses"} to={"/app/expenses?page=1"} />
           </li>
           <li>
               <SideMenuItem icon={<AreaChart className={"w-5 h-5"} />} title={"Reports"} to={"/app/reports"} />

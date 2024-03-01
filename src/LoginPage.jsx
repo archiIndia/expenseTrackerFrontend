@@ -22,7 +22,7 @@ function LoginPage() {
     catch(error){
       setErrorMsg(error.message)
   };
-
+  }
   return (
     <div className={"h-screen flex "}>
       <div className={"hidden md:block md:w-2/3 bg-primary p-5"}>
@@ -67,7 +67,7 @@ function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default LoginPage;

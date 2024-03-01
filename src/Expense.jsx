@@ -22,6 +22,7 @@ import { ExpenseList } from "./ExpenseList";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { cn } from "@/lib/utils.js";
+import {useLocation} from "react-router-dom"
 
 function Expense() {
   const [income_val, setIncome_val] = useState("");
@@ -33,6 +34,7 @@ function Expense() {
   const [spendingList, setSpendingList] = useState([
     { item_name: "", amount: "" },
   ]);
+  const { search } = useLocation();
 
   const handleCreateExpense = async () => {
     setIsPerformingAnyAction(true);
@@ -48,8 +50,9 @@ function Expense() {
   };
   const loadAllExpenses = async () => {
     try {
-      const data = await getAllExpenses();
-
+      const params= new URLSearchParams(search);
+      const currentPage = params.get("page");
+      const data = await getAllExpenses(currentPage);
       setExpenses([...data]);
     } catch (err) {
       console.log("Fault Lines");
@@ -66,7 +69,7 @@ function Expense() {
   //Load all Data for One time...
   useEffect(() => {
     loadAllExpenses();
-  }, []);
+  }, [search]);
 
   const handleDelete = async (delExpenseId) => {
     setIsPerformingAnyAction(true);
