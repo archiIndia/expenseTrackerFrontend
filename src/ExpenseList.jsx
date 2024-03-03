@@ -4,12 +4,22 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  MoreVertical,
+  LogOut,
+  ArrowDownAZ,
+  ArrowDown,
 } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import axios from "axios";
 import { Button } from "./components/ui/button";
 import { useLocation, useNavigate } from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu.jsx";
 
 function ExpenseList({
   allExpenses = [],
@@ -39,6 +49,38 @@ function ExpenseList({
       <div className={"flex justify-between"}>
         <span>Expense List / page {currentPage}</span>
         <div className={"flex gap-x-2"}>
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant={"outline"}
+                size={"icon"}
+                className={"hover:bg-primary hover:text-white"}
+              >
+                <ArrowDownAZ className={"h-4 cursor-pointer"} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="text-sm bg-gray-50 outline-none  p-1"
+              align={"end"}
+            >
+              <DropdownMenuItem
+                role={"button"}
+                className={
+                  "flex justify-between bg-primary text-primary-foreground"
+                }
+              >
+                <span className={"ml-1"}>Date</span>
+                <ArrowDown className={"h-4 w-4"} />
+              </DropdownMenuItem>
+              <DropdownMenuItem role={"button"}>
+                <span className={"ml-1"}>Income</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem role={"button"}>
+                <span className={"ml-1"}>Balance</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button
             variant={"outline"}
             size={"icon"}

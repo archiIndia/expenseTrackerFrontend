@@ -49,7 +49,7 @@ const SideBar = () => {
         </DropdownMenu>
       </div>
 
-      <div className={"pl-1 "}>
+      <div className={"pl-2"}>
         <ul className={"mt-5"}>
           <li>
             <SideMenuItem
@@ -85,7 +85,7 @@ const SideMenuItem = ({ icon, title, to }) => {
       to={to}
       className={({ isActive }) => {
         return cn(
-          "flex items-center  rounded-l-md p-2",
+          "flex items-center p-2 rounded-l-md  ",
           isActive ? "text-accent-foreground bg-gray-50" : "hover:bg-blue-800",
         );
       }}
