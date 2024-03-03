@@ -11,18 +11,16 @@ function LoginPage() {
   const [password, setPassword] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const handleLogin = async () => {
-
-    try{
-    localStorage.removeItem("token");
-    const login= await signIn({email: email,password: password})
-    console.log(login);
-    localStorage.setItem("token",login.token);
-    navi("/app/home");
+    try {
+      localStorage.removeItem("token");
+      const login = await signIn({ email: email, password: password });
+      console.log(login);
+      localStorage.setItem("token", login.token);
+      navi("/app/home");
+    } catch (error) {
+      setErrorMsg(error.message);
     }
-    catch(error){
-      setErrorMsg(error.message)
   };
-  }
   return (
     <div className={"h-screen flex "}>
       <div className={"hidden md:block md:w-2/3 bg-primary p-5"}>
@@ -67,7 +65,7 @@ function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default LoginPage;

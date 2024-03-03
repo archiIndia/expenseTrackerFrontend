@@ -4,8 +4,6 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
-  LogOut,
   ArrowDownAZ,
   ArrowDown,
 } from "lucide-react";

@@ -1,31 +1,43 @@
 use("expense");
 db.getCollection("expenses").aggregate([
-  //1st Stage
-  {
-    $sort: {
-      balance: 1,
-    },
-  },
-  //2nd Stage
-  {
-    $project: {
-      userId: 0,
-      __v: 0,
-      itemList:{_id:0},
-      date:0,
-    },
-  },
+
+ 
   {
     $match: {
-      status: "A"
-    }
+      status: "A",
+    },
   },
   {
-    $limit: 5
+    $project: {
+      balance: 1,
+      income: 1,
+      itemList: 1,
+      status: 1,
+    },
   },
   {
     $addFields: {
-        doubleBal:{$multiply:["$balance",2]}
-    }
-  }
+      doubleBal: { $multiply: ["$balance", 2] },
+    },
+  },
+  {
+    $unwind: {
+      path: "$itemList",
+    },
+  },
+  {
+    $group: {
+      _id: "$itemList.item_name",
+      total_expense: { $sum: "$itemList.amount" },
+      item_name: { $first: "$itemList.item_name" },
+    },
+  },
+  {
+    $sort: {
+      total_expense: -1,
+    },
+  },
+  {
+    $limit: 5,
+  },
 ]);

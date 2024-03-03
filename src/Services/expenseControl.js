@@ -55,6 +55,15 @@ const updateSingleExpense = async (fId, { incomeVal, exp_list, dateVal }) => {
     alert("Warning...");
   }
 };
+const getTopExpenses= async(is_monthly= false)=> {
+  try{
+    const response = await axios.get(`${baseURL}/top_expenses?is_monthly=${is_monthly}`,config());
+    return response.data;
+  }
+  catch(error){
+throw error;
+  }
+}
 
 export {
   createExpense,
@@ -62,4 +71,5 @@ export {
   deleteExpense,
   getSingleExpense,
   updateSingleExpense,
+  getTopExpenses
 };
