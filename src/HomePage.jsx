@@ -16,8 +16,9 @@ const HomePage = () => {
       <div className={"min-w-60 h-screen"}>
         <SideBar />
       </div>
-      <div className={"w-full h-screen overflow-scroll"}>
-        <Outlet />
+      <div className={"w-full h-screen overflow-y-auto"}>
+        <Outlet/>
+
       </div>
     </div>
   );

@@ -90,6 +90,7 @@ function Expense() {
     SetDate(moment(fetched?.date)?.format("YYYY-MM-DD"));
     setSpendingList(fetched?.itemList);
     setFId(fetchId);
+    setShowSideBar(true);
   };
   const handleUpdate = async () => {
     setIsPerformingAnyAction(true);
@@ -152,16 +153,16 @@ function Expense() {
   };
 
   return (
-    <div className={"flex flex-row gap-2"}>
+    <div className={"flex flex-row"}>
       <div
         className={cn(
-          "flex flex-col  transition-width duration-500  gap-3 min-h-screen border-r-[1px] border-r-gray-100 shadow bg-gray-50 justify-between relative ",
-          showSideBar ? "w-96" : "w-10",
+          "flex flex-col  transition-width duration-500  gap-3 h-screen border-r-[1px] border-r-gray-100 shadow bg-gray-50 justify-between relative ",
+          showSideBar ? "w-1/3" : "w-10",
         )}
       >
         {showSideBar && (
           <>
-            <div className={"flex gap-3 flex-col py-10 px-5"}>
+            <div className={"flex gap-3 flex-col py-10 px-5 h-screen overflow-y-auto"}>
               <div>Add Expense</div>
               <div>
                 <Input
@@ -320,7 +321,7 @@ function Expense() {
           variant={"outline"}
           onClick={handleShowSideBar}
           className={cn(
-            "absolute -right-5 bottom-1/2  ",
+            "absolute -right-5 top-8 h-10 w-10",
             !showSideBar ? "bg-primary" : "",
           )}
         >
@@ -332,7 +333,7 @@ function Expense() {
       </div>
       <div
         className={cn(
-          "flex flex-col  px-5 h-screen py-6 overflow-scroll",
+          "flex flex-col h-screen overflow-auto px-6 py-10",
           showSideBar ? "w-2/3" : "w-full",
         )}
       >
