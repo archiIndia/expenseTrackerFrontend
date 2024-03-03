@@ -77,7 +77,6 @@ const SideBar = () => {
     </div>
   );
 };
-export default SideBar;
 
 const SideMenuItem = ({ icon, title, to }) => {
   return (
@@ -95,3 +94,6 @@ const SideMenuItem = ({ icon, title, to }) => {
     </NavLink>
   );
 };
+
+export default SideBar;
+

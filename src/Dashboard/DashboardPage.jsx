@@ -7,7 +7,6 @@ const DashboardPage = () => {
         <div className={"flex my-5 h-60"}>
             <div className={"w-1/3"}>
                 <TopExpenses/>
-
             </div>
         </div>
     </div>
