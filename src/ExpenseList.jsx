@@ -1,4 +1,10 @@
-import { Trash2, PenLine, Loader2 } from "lucide-react";
+import {
+  Trash2,
+  PenLine,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import axios from "axios";
@@ -14,10 +20,10 @@ function ExpenseList({
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const navi = useNavigate();
-  
+  const currentPage = params.get("page");
+
   const handlePrevNext = (action) => {
     try {
-      const currentPage = params.get("page");
       const nextPage = parseInt(currentPage) + (action === "next" ? 1 : -1);
       if (nextPage < 1) return;
       params.set("page", nextPage);
@@ -30,26 +36,32 @@ function ExpenseList({
   };
   return (
     <div>
-      <div className={"flex justify-between "}>
-        <span>Expense List</span>
-        <div>
+      <div className={"flex justify-between"}>
+        <span>Expense List / page {currentPage}</span>
+        <div className={"flex gap-x-2"}>
           <Button
+            variant={"outline"}
+            size={"icon"}
+            className={"hover:bg-primary hover:text-white"}
             onClick={() => {
               handlePrevNext("prev");
             }}
           >
-            Previous
+            <ChevronLeft />
           </Button>
           <Button
+            variant={"outline"}
+            size={"icon"}
+            className={"hover:bg-primary hover:text-white"}
             onClick={() => {
               handlePrevNext("next");
             }}
           >
-            Next
+            <ChevronRight />
           </Button>
         </div>
       </div>
-      <div className={"grid grid-cols-1 xl:grid-cols-2 mt-4 gap-2"}>
+      <div className={"grid lg:grid-cols-2 xl:grid-cols-3 mt-4 gap-2"}>
         {allExpenses.map((exp, index) => (
           <div
             key={index}
@@ -144,7 +156,7 @@ const FileUpload = () => {
             headers: {
               "content-type": "multipart/form-data",
             },
-          }
+          },
         );
         console.log("File Uploaded Sucessfully:", response.data);
       } catch (error) {
